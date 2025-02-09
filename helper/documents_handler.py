@@ -43,7 +43,7 @@ def process_documents(uploaded_files,reranker,embedding_model, base_url):
         except Exception as e:
             st.error(f"Error processing {file.name}: {str(e)}")
             return
-
+    st.subheader("📚 Splitting the document into chunks...")
     # Text splitting
     text_splitter = CharacterTextSplitter(
         chunk_size=1000,
@@ -54,8 +54,9 @@ def process_documents(uploaded_files,reranker,embedding_model, base_url):
     text_contents = [doc.page_content for doc in texts]
 
     # 🚀 Hybrid Retrieval Setup
+    st.subheader("🎯 Creating embeddings to be used by HyDE for better and more accurate retrieval ")
     embeddings = OllamaEmbeddings(model=embedding_model, base_url=base_url)
-    
+    st.subheader("🔄 Setting up hybrid BM25 and Faiss retriever...")
     # Vector store
     vector_store = FAISS.from_documents(texts, embeddings)
     
@@ -65,7 +66,7 @@ def process_documents(uploaded_files,reranker,embedding_model, base_url):
         bm25_impl=BM25Okapi,
         preprocess_func=lambda text: re.sub(r"\W+", " ", text).lower().split()
     )
-
+    st.subheader("🎯 Preparing HyDE for better and more accurate retrieval...")
     # Ensemble retrieval
     ensemble_retriever = EnsembleRetriever(
         retrievers=[
@@ -74,7 +75,7 @@ def process_documents(uploaded_files,reranker,embedding_model, base_url):
         ],
         weights=[0.4, 0.6]
     )
-
+    st.subheader("📊 Setting up Neural Reranking with Cross Encoder Model...")
     # Store in session
     st.session_state.retrieval_pipeline = {
         "ensemble": ensemble_retriever,
@@ -85,7 +86,7 @@ def process_documents(uploaded_files,reranker,embedding_model, base_url):
 
     st.session_state.documents_loaded = True
     st.session_state.processing = False
-
+    st.subheader("📥 Computing knowledge graph nodes and edges...")
     # ✅ Debugging: Print Knowledge Graph Nodes & Edges
     if "knowledge_graph" in st.session_state.retrieval_pipeline:
         G = st.session_state.retrieval_pipeline["knowledge_graph"]
