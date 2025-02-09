@@ -1,4 +1,4 @@
-### 📈 **GraphSeek – Your Personal Document AI on steroids with GraphRAG, Neural Reranking, Chat History Integration and many more!**  
+### 📈 **GraphSeek – Your Personal Document AI on steroids!**  
 **(100% Free, Private (No Internet), and Local PC Installation)**  
 
 ## **💡 What sets GraphSeek apart from others**
