@@ -29,22 +29,6 @@ try:
 except Exception as e:
     st.error(f"Failed to load CrossEncoder model: {str(e)}")
 
-# Check Ollama status
-def check_ollama_status():
-    try:
-        response = requests.get(f"{OLLAMA_BASE_URL}/api/tags")
-        if response.status_code == 200:
-            return True
-    except requests.exceptions.ConnectionError:
-        return False
-    return False
-
-# Add this before the main app code
-if not check_ollama_status():
-    st.error("⚠ Ollama is not running! Please start Ollama first.")
-    st.code("ollama serve", language="bash")
-    st.stop()
-
 # Check if required models are available
 def check_models():
     try:
