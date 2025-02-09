@@ -7,7 +7,7 @@ from sentence_transformers import CrossEncoder
 import torch
 import os
 from dotenv import load_dotenv, find_dotenv
-torch.classes._path_ = [os.path.join(torch._path[0], torch.classes.file_)]  # Fix for torch classes not found error
+torch.classes.__path__ = [os.path.join(torch.__path__[0], torch.classes.__file__)]   # Fix for torch classes not found error
 
 load_dotenv(find_dotenv())
 
