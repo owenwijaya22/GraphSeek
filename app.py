@@ -119,7 +119,8 @@ st.caption("Advanced RAG System with GraphRAG, Hybrid Retrieval, Neural Rerankin
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
-
+        
+st.header("❓ Ask a Question")
 if prompt := st.chat_input("Ask about your documents..."):
     chat_history = "\n".join([msg["content"] for msg in st.session_state.messages[-5:]])  # Last 5 messages
     st.session_state.messages.append({"role": "user", "content": prompt})
