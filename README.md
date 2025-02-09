@@ -18,13 +18,13 @@
 
 ### **1️⃣ Clone the Repository Code & Install Dependencies**
 
-```bash
-git clone https://github.com/owenwijaya22/GraphSeek.git
-cd GraphSeek
-python -m venv venv
-venv/Scripts/activate
-pip install -r requirements.txt
-```
+  ```bash
+  git clone https://github.com/owenwijaya22/GraphSeek.git
+  cd GraphSeek
+  python -m venv venv
+  venv/Scripts/activate
+  pip install -r requirements.txt
+  ```
 
 ### **2️⃣ Download & Set Up Ollama**
 
@@ -32,16 +32,66 @@ Ollama is required to run **DeepSeek-7B** and **Nomic Embeddings** locally.
 🔗 **Download Ollama** → [https://ollama.com/](https://ollama.com/)  
 
 Then, get the required models:
-```bash
-ollama pull deepseek-r1:7b
-ollama pull nomic-embed-text
-```
+  ```bash
+  ollama pull deepseek-r1:7b
+  ollama pull nomic-embed-text
+  ```
 
 ### **3️⃣ Run the Application**
-```bash
-streamlit run app.py
+1. Make sure **Ollama** is running on your system:
+   ```
+   ollama serve
+   ```
+2. Launch the Streamlit app:
+   ```bash
+   streamlit run app.py
+   ```
+## **2️⃣ Docker Installation**
+
+### **A) Single-Container Approach (Ollama on Your Host)**
+
+If **Ollama** is already **installed on your host machine** and listening at `localhost:11434`, do the following:
+
+1. **Build & Run**:
+   ```
+   docker-compose build
+   docker-compose up
+   ```
+2. The app is now served at **[http://localhost:8501](http://localhost:8501)**. Ollama runs on your host, and the container accesses it via the specified URL.
+
+### **B) Two-Container Approach (Ollama in Docker)**
+
+If you prefer **everything** in Docker:
 ```
----
+version: "3.8"
+
+services:
+  ollama:
+    image: ghcr.io/jmorganca/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+
+  graphseek-service:
+    container_name: graphseek-service
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - OLLAMA_API_URL=http://ollama:11434
+      - MODEL=deepseek-r1:7b
+      - EMBEDDINGS_MODEL=nomic-embed-text:latest
+      - CROSS_ENCODER_MODEL=cross-encoder/ms-marco-MiniLM-L-6-v2
+    depends_on:
+      - ollama
+```
+
+Then:
+```
+docker-compose build
+docker-compose up
+```
+Both **Ollama** and the chatbot run in Docker. Access the chatbot at **[http://localhost:8501](http://localhost:8501)**.
 
 ## **📌 How It Works**
 1. 📥 **Document Processing**

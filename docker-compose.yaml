@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  graphseek-service:
+    container_name: graphseek-service
+    build: .
+    ports:
+      - "8501:8501"
+    
+    # Environment variables for .env usage or direct injection (optional).
+    # If you have a .env file, Docker Compose can load them with env_file: .env
+    # Or define them inline:
+    environment:
+      - OLLAMA_API_URL=http://host.docker.internal:11434
+      - MODEL=deepseek-r1:7b
+      - EMBEDDINGS_MODEL=nomic-embed-text:latest
+      - CROSS_ENCODER_MODEL=cross-encoder/ms-marco-MiniLM-L-6-v2
+
+    # (Optional) If you want to mount your local code into the container for live development:
+    # volumes:
+    #   - .:/usr/src/app
+
+    # If you want to override the Dockerfile CMD:
+    # command: ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
