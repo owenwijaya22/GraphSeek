@@ -1,0 +1,17 @@
+streamlit
+networkx
+torch
+requests
+numpy
+pandas
+langchain-community
+langchain-core
+langchain-ollama
+faiss-cpu
+sentence-transformers
+rank-bm25
+pydantic
+PyMuPDF
+docx2txt
+tqdm
+pypdf
