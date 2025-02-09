@@ -5,6 +5,7 @@ import requests
 
 # 🚀 Query Expansion with HyDE
 def expand_query(query,uri,model):
+    st.info("Setting up Query Expansion with HyDE")
     try:
         response = requests.post(uri, json={
             "model": model,
@@ -19,17 +20,18 @@ def expand_query(query,uri,model):
 
 # 🚀 Advanced Retrieval Pipeline
 def retrieve_documents(query, uri, model, chat_history=""):
+    st.info( "Retrieving documents using BM25 + FAISS")
     expanded_query = expand_query(f"{chat_history}\n{query}", uri, model) if st.session_state.enable_hyde else query
-    
     # 🔍 Retrieve documents using BM25 + FAISS
     docs = st.session_state.retrieval_pipeline["ensemble"].invoke(expanded_query)
 
+    st.info("Retrieving documents using GraphRAG")
     # 🚀 GraphRAG Retrieval
     if st.session_state.enable_graph_rag:
         graph_results = retrieve_from_graph(query, st.session_state.retrieval_pipeline["knowledge_graph"])
         
         # Debugging output
-        st.write(f"🔍 GraphRAG Retrieved Nodes: {graph_results}")
+        st.write(f"GraphRAG Retrieved Nodes: {graph_results}")
 
         # Ensure graph results are correctly formatted
         graph_docs = []
@@ -37,10 +39,12 @@ def retrieve_documents(query, uri, model, chat_history=""):
             graph_docs.append(Document(page_content=node))  # ✅ Fix: Correct Document initialization
 
         # If graph retrieval is successful, merge it with standard document retrieval
+        st.info("Merging GraphRAG results with BM25 + FAISS results")
         if graph_docs:
             docs = graph_docs + docs  # Merge GraphRAG results with FAISS + BM25 results
     
     # 🚀 Neural Reranking (if enabled)
+    st.info("Neural Reranking with Cross Encoder Model")
     if st.session_state.enable_reranking:
         pairs = [[query, doc.page_content] for doc in docs]  # ✅ Fix: Use `page_content`
         scores = st.session_state.retrieval_pipeline["reranker"].predict(pairs)
