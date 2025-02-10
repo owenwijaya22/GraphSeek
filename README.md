@@ -4,7 +4,7 @@
 
 ## **💡 What sets GraphSeek apart from others**
 
-- 🕸️ **GraphRAG Integration**: Enhances retrieval by constructing a **Knowledge Graph** from your documents, allowing for more **contextual and relational understanding
+- 🕸️ **GraphRAG Integration**: Enhances retrieval by constructing a **Knowledge Graph** from your documents, allowing for more contextual and relational understanding
 - 🔍 **Neural Reranking**: Fine-tuned result ranking using cross-encoders
 - 🎯 **HyDE Technology**: Hypothetical Document Embeddings for better retrieval
 - 🌟 **NOMIC Embeddings**: Advanced semantic understanding of your documents
